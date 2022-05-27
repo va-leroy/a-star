@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+	"math/rand"
+	"time"
+)
 
 type MinHeap struct {
 	array []int // Array of numbers that starts from 1 not 0
@@ -92,21 +97,29 @@ func heapVerify(h *MinHeap) {
 }
 
 func heapPrint(h *MinHeap) {
+	var height int = int(math.Log2(float64(h.n))) + 1 // Calculate the height of the heap
 	for i := 1; i <= h.n; i++ {
-		fmt.Print(h.array[i], " ")
+		var level int = int(math.Log2(float64(i))) + 1 // Calculate the level of the current element
+		var space int = (height - level + 1) * 2       // Calculate the amount of spaces to print
+		fmt.Printf("%*s%d", space, "", h.array[i])
+		if int(math.Pow(2, float64(level)))-1 == i {
+			fmt.Println()
+		}
 	}
 	fmt.Println()
 }
 
 func main() {
-	// Create a heap of 10 elements
+	// Initialize random seed in Go
+	rand.Seed(time.Now().UnixNano())
+
+	// Create a heap of 10 elements (that can only fit 9 elements because of the 0 index)
 	var h *MinHeap = heapCreate(10)
 
-	// Add elements to the heap
-	heapAdd(h, 12)
-	heapAdd(h, 31)
-	heapAdd(h, 67)
-	heapAdd(h, 24)
+	// Add some random numbers to the heap
+	for i := 1; i < 10; i++ {
+		heapAdd(h, rand.Intn(100))
+	}
 
 	// Print the heap
 	heapPrint(h)
