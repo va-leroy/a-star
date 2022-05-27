@@ -1,10 +1,8 @@
-package main
+package heap
 
 import (
 	"fmt"
 	"math"
-	"math/rand"
-	"time"
 )
 
 type MinHeap struct {
@@ -13,26 +11,26 @@ type MinHeap struct {
 	nmax  int   // Maximum amount of numbers in the heap
 }
 
-func heapCreate(nmax int) *MinHeap {
+func HeapCreate(nmax int) *MinHeap {
 	return &MinHeap{make([]int, nmax), 0, nmax} // Allocate memory
 }
 
-func heapDestroy(h *MinHeap) {
+func HeapDestroy(h *MinHeap) {
 	h.array = nil // Free memory
 }
 
-func heapEmpty(h *MinHeap) bool {
+func HeapEmpty(h *MinHeap) bool {
 	return h.n == 0 && h.array[1] == 0
 }
 
-func heapTop(h *MinHeap) int {
-	if heapEmpty(h) {
+func HeapTop(h *MinHeap) int {
+	if HeapEmpty(h) {
 		return -1
 	}
 	return h.array[1]
 }
 
-func heapAdd(h *MinHeap, x int) {
+func HeapAdd(h *MinHeap, x int) {
 	if h.n == h.nmax {
 		fmt.Println("Heap is full")
 		return
@@ -49,8 +47,8 @@ func heapAdd(h *MinHeap, x int) {
 	}
 }
 
-func heapPop(h *MinHeap) int {
-	if heapEmpty(h) {
+func HeapPop(h *MinHeap) int {
+	if HeapEmpty(h) {
 		fmt.Println("Heap is empty")
 		return -1
 	}
@@ -80,7 +78,7 @@ func heapPop(h *MinHeap) int {
 	return x
 }
 
-func heapVerify(h *MinHeap) {
+func HeapVerify(h *MinHeap) {
 	for i := 1; i <= h.n; i++ {
 		var l int = 2 * i
 		var r int = l + 1
@@ -96,7 +94,7 @@ func heapVerify(h *MinHeap) {
 	fmt.Println("Heap is valid")
 }
 
-func heapPrint(h *MinHeap) {
+func HeapPrint(h *MinHeap) {
 	var height int = int(math.Log2(float64(h.n))) + 1 // Calculate the height of the heap
 	for i := 1; i <= h.n; i++ {
 		var level int = int(math.Log2(float64(i))) + 1 // Calculate the level of the current element
@@ -107,20 +105,4 @@ func heapPrint(h *MinHeap) {
 		}
 	}
 	fmt.Println()
-}
-
-func main() {
-	// Initialize random seed in Go
-	rand.Seed(time.Now().UnixNano())
-
-	// Create a heap of 10 elements (that can only fit 9 elements because of the 0 index)
-	var h *MinHeap = heapCreate(10)
-
-	// Add some random numbers to the heap
-	for i := 1; i < 10; i++ {
-		heapAdd(h, rand.Intn(100))
-	}
-
-	// Print the heap
-	heapPrint(h)
 }
