@@ -1,7 +1,7 @@
 package main
 
 import (
-	"a-star/libraries"
+	"a-star/libraries/heap"
 	"math/rand"
 	"time"
 )
