@@ -1,6 +1,7 @@
 package main
 
 import (
+	"a-star/libraries/grid"
 	"a-star/libraries/heap"
 	"math/rand"
 	"time"
@@ -14,8 +15,13 @@ func main() {
 	var h *heap.MinHeap = heap.HeapCreate(10)
 
 	// Add some random numbers to the heap
-	for i := 1; i < 10; i++ {
-		heap.HeapAdd(h, rand.Intn(100))
+	for i := 1; i < 5; i++ {
+		var x grid.Node
+		x.Pos.X = rand.Intn(100)
+		x.Pos.Y = rand.Intn(100)
+		x.Cost = float64(rand.Intn(100))
+		x.Score = x.Cost + float64(rand.Intn(100))
+		heap.HeapAdd(h, x)
 	}
 
 	// Print the heap
