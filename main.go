@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func main() {
+func UsingHeap() {
 	// Initialize random seed in Go
 	rand.Seed(time.Now().UnixNano())
 
@@ -26,4 +26,29 @@ func main() {
 
 	// Print the heap
 	heap.HeapPrint(h)
+}
+
+func main() {
+	// Create two positions
+	var s, e grid.Position
+	// Set the start position
+	s.X = 0
+	s.Y = 0
+	// Set the end position
+	e.X = 10
+	e.Y = 10
+
+	// Create a grid
+	var g *grid.Grid = grid.CreateGrid(10, 10, s, e)
+
+	// Create 10 random walls
+	for i := 0; i < 10; i++ {
+		var x, y int
+		x = rand.Intn(10)
+		y = rand.Intn(10)
+		g.Value[x][y] = grid.V_WALL
+	}
+
+	// Save the grid to a file
+	grid.PrintGrid(g)
 }

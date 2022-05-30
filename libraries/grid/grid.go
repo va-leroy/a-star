@@ -2,6 +2,7 @@ package grid
 
 import (
 	"math"
+	"os"
 )
 
 type Position struct {
@@ -65,6 +66,46 @@ func CreateGrid(x, y int, s, e Position) *Grid {
 func (g *Grid) DestroyGrid() {
 	g.Value = nil
 	g.Mark = nil
+}
+
+func PrintGrid(g *Grid) {
+	// Create a file to write to
+	f, err := os.Create("grid.txt")
+	if err != nil {
+		panic(err)
+	}
+
+	var s string
+	for i := 0; i < g.X+1; i++ {
+		for j := 0; j < g.Y+1; j++ {
+			if i == g.Start.X && j == g.Start.Y {
+				s += "s" // Starting position
+			}
+			if i == g.End.X && j == g.End.Y {
+				s += "e" // Ending position
+			}
+
+			switch g.Value[i][j] {
+			case V_FREE:
+				s += " " // Free space
+			case V_WALL:
+				s += "#" // Wall
+			}
+
+			switch g.Mark[i][j] {
+			case M_USED:
+				s += "." // Used
+			case M_FRONT:
+				s += "*" // Inside the frontier Q
+			case M_PATH:
+				s += "x" // Path
+			}
+		}
+		s += "\n"
+	}
+
+	f.WriteString(s) // Write the string to the file
+	f.Close()        // Close the file
 }
 
 func Heuristic(s, t Position) float64 {
