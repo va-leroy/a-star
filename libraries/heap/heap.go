@@ -32,10 +32,16 @@ func HeapTop(h *MinHeap) float64 {
 }
 
 func HeapAdd(h *MinHeap, x grid.Node) {
-	if h.N == h.Nmax {
-		fmt.Println("Heap is full")
-		return
+	if h.N+1 == h.Nmax {
+		fmt.Println("Doubling the heap")
+		var newArray []grid.Node = make([]grid.Node, h.Nmax*2)
+		for i := 0; i < h.Nmax; i++ {
+			newArray[i] = h.Array[i]
+		}
+		h.Array = newArray
+		h.Nmax *= 2
 	}
+
 	fmt.Println("Adding", x.Score)
 	h.N++
 	h.Array[h.N] = x

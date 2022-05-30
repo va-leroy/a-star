@@ -12,10 +12,10 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// Create a heap of 10 elements (that can only fit 9 elements because of the 0 index)
-	var h *heap.MinHeap = heap.HeapCreate(10)
+	var h *heap.MinHeap = heap.HeapCreate(5)
 
-	// Add some random numbers to the heap
-	for i := 1; i < 5; i++ {
+	// Add 5 random numbers to the heap
+	for i := 0; i < 4; i++ {
 		var x grid.Node
 		x.Pos.X = rand.Intn(100)
 		x.Pos.Y = rand.Intn(100)
