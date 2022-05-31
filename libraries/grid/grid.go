@@ -80,49 +80,44 @@ func PrintGrid(g *Grid) {
 		for j := 0; j < g.Y+1; j++ {
 			if i == g.Start.X && j == g.Start.Y {
 				s += "s" // Starting position
-			}
-			if i == g.End.X && j == g.End.Y {
+			} else if i == g.End.X && j == g.End.Y {
 				s += "e" // Ending position
-			}
-
-			switch g.Value[i][j] {
-			case V_FREE:
-				s += " " // Free space
-			case V_WALL:
-				s += "#" // Wall
-			}
-
-			switch g.Mark[i][j] {
-			case M_USED:
-				s += "." // Used
-			case M_FRONT:
-				s += "*" // Inside the frontier Q
-			case M_PATH:
-				s += "x" // Path
+			} else {
+				switch g.Value[i][j] {
+				case V_FREE:
+					if g.Mark[i][j] == M_USED {
+						s += "." // Used
+					} else if g.Mark[i][j] == M_FRONT {
+						s += "*" // Front
+					} else if g.Mark[i][j] == M_PATH {
+						s += "x" // Path
+					} else {
+						s += " " // Free
+					}
+				case V_WALL:
+					s += "#" // Wall
+				}
 			}
 		}
 		s += "\n"
 	}
 
+	s = s[:len(s)-1] // Remove the last newline
 	f.WriteString(s) // Write the string to the file
 	f.Close()        // Close the file
 }
 
 func Heuristic(s, t Position) float64 {
-	return math.Max(float64(t.X-s.X), float64(t.Y-s.Y))
+	return math.Sqrt(math.Pow(float64(s.X-t.X), 2) + math.Pow(float64(s.Y-t.Y), 2))
 }
 
-func CreateNode(par *Node, c float64, pos Position, g *Grid) *Node {
+func CreateNode(par *Node, cost float64, pos Position, g *Grid) *Node {
 	var n Node
 	if par != nil {
 		n.Par = par
 	}
-	n.Cost = c
+	n.Cost = cost
 	n.Pos = pos
-	n.Score = Heuristic(g.Start, g.End)
+	n.Score = Heuristic(n.Pos, g.End)
 	return &n
-}
-
-func CompareNode(a, b *Node) int {
-	return int(a.Score) - int(b.Score)
 }

@@ -24,11 +24,11 @@ func HeapEmpty(h *MinHeap) bool {
 	return h.N == 0 && h.Array[1].Score == 0
 }
 
-func HeapTop(h *MinHeap) float64 {
+func HeapTop(h *MinHeap) grid.Node {
 	if HeapEmpty(h) {
-		return -1
+		panic("Heap is empty")
 	}
-	return h.Array[1].Score
+	return h.Array[1]
 }
 
 func HeapAdd(h *MinHeap, x grid.Node) {
@@ -42,7 +42,7 @@ func HeapAdd(h *MinHeap, x grid.Node) {
 		h.Nmax *= 2
 	}
 
-	fmt.Println("Adding", x.Score)
+	fmt.Println("[+] Adding", x.Score, "Coordinates:", x.Pos)
 	h.N++
 	h.Array[h.N] = x
 	var i int = h.N
@@ -58,7 +58,7 @@ func HeapPop(h *MinHeap) float64 {
 		fmt.Println("Heap is empty")
 		return -1
 	}
-	fmt.Println("Popping", h.Array[1])
+	fmt.Println("[-] Popping", h.Array[1].Score, "Coordinates:", h.Array[1].Pos)
 
 	var x grid.Node = h.Array[1] // Save the top element to return it later
 	h.Array[1] = h.Array[h.N]    // Move the last element to the top
@@ -96,4 +96,13 @@ func HeapPrint(h *MinHeap) {
 		}
 	}
 	fmt.Println()
+}
+
+func HeapContains(h *MinHeap, x grid.Node) bool {
+	for i := 1; i <= h.N; i++ {
+		if h.Array[i].Pos == x.Pos {
+			return true
+		}
+	}
+	return false
 }
