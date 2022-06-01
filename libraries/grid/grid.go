@@ -5,32 +5,29 @@ import (
 	"os"
 )
 
-type Position struct {
-	X int // x coordinate
-	Y int // y coordinate
-}
-
-type Grid struct {
-	X, Y  int      // Grid size
-	Value [][]int  // Grid values
-	Mark  [][]int  // Grid marks
-	Start Position // Start position
-	End   Position // End position
-}
-
-type Node struct {
-	Pos   Position // Position
-	Cost  float64  // Cost
-	Score float64  // Score = Cost + Heuristic
-	Par   *Node    // Previous node (parent)
-}
+type (
+	Position struct {
+		X int // x coordinate
+		Y int // y coordinate
+	}
+	Grid struct {
+		X, Y  int      // Grid size
+		Value [][]int  // Grid values
+		Mark  [][]int  // Grid marks
+		Start Position // Start position
+		End   Position // End position
+	}
+	Node struct {
+		Pos   Position // Position
+		Cost  float64  // Cost
+		Score float64  // Score = Cost + Heuristic
+		Par   *Node    // Previous node (parent)
+	}
+)
 
 const (
 	V_FREE = iota
 	V_WALL
-)
-
-const (
 	M_NULL = iota
 	M_USED
 	M_FRONT
@@ -69,7 +66,7 @@ func (g *Grid) DestroyGrid() {
 }
 
 func IsInGrid(g *Grid, pos Position) bool {
-	return pos.X >= 0 && pos.X < g.X+1 && pos.Y >= 0 && pos.Y < g.Y+1
+	return pos.X >= 0 && pos.X <= g.X && pos.Y >= 0 && pos.Y <= g.Y
 }
 
 func PrintGrid(g *Grid) {
