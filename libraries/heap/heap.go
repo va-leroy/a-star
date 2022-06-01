@@ -97,12 +97,3 @@ func HeapPrint(h *MinHeap) {
 	}
 	fmt.Println()
 }
-
-func HeapContains(h *MinHeap, x grid.Node) bool {
-	for i := 1; i <= h.N; i++ {
-		if h.Array[i].Pos == x.Pos {
-			return true
-		}
-	}
-	return false
-}

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022, Valentin Leroy
+ * All rights reserved.
+ */
 package main
 
 import (
@@ -9,6 +13,9 @@ import (
 )
 
 func main() {
+	// Start timer for benchmarking
+	timer := time.Now()
+
 	// Initialize random seed in Go
 	rand.Seed(time.Now().UnixNano())
 
@@ -20,22 +27,24 @@ func main() {
 	s.Y = 0
 
 	// Set the end position
-	e.X = 100
-	e.Y = 100
+	e.X = 20
+	e.Y = 20
 
 	// Declare size of the grid
-	var N int = 100
+	var N int = 20
+	fmt.Println("[!] Grid size:", N)
 
 	// Create a grid
 	var G *grid.Grid = grid.CreateGrid(N, N, s, e)
 
-	// Create 10 random walls
-	for i := 0; i < 10; i++ {
+	// Create 40 random walls
+	for i := 0; i < 40; i++ {
 		var x, y int
-		x = rand.Intn(10)
-		y = rand.Intn(10)
+		x = rand.Intn(N)
+		y = rand.Intn(N)
 		G.Value[x][y] = grid.V_WALL
 	}
+	fmt.Println("[!] Number of walls:", 40)
 
 	N = N * N                        // Number of nodes
 	var size int = (N * (N - 1)) / 2 // Number of edges
@@ -55,20 +64,24 @@ func main() {
 		// If u is equal to end position
 		if U.Pos.X == G.End.X && U.Pos.Y == G.End.Y {
 			fmt.Println("[!] Path found")
+
 			// Return path from u to start
 			for U.Par != nil {
 				G.Mark[U.Pos.X][U.Pos.Y] = grid.M_PATH
 				U = *U.Par
-				fmt.Println("Coordinates: ", U.Pos.X, U.Pos.Y)
 			}
+
 			G.Mark[U.Pos.X][U.Pos.Y] = grid.M_PATH // Mark start position
 			heap.HeapDestroy(Q)                    // Destroy the heap
 			grid.PrintGrid(G)                      // Print the grid
+
+			fmt.Println("[!] Time elapsed:", time.Since(timer))
 			return
 		}
 
 		G.Mark[U.Pos.X][U.Pos.Y] = grid.M_USED // Mark U as used
 
+		// For each neighbor of U, adjacent then diagonal
 		var dx = []int{-1, 1, 1, -1, -1, 0, 2, 0}
 		var dy = []int{0, 1, -1, -1, 0, 2, 0, -2}
 
@@ -90,6 +103,6 @@ func main() {
 		}
 	}
 
-	heap.HeapDestroy(Q)          // Destroy the heap
-	fmt.Println("No path found") // No return instruction because it's redundant
+	heap.HeapDestroy(Q)              // Destroy the heap
+	fmt.Println("[!] No path found") // No return instruction because it's redundant
 }
