@@ -33,7 +33,7 @@ func HeapTop(h *MinHeap) grid.Node {
 
 func HeapAdd(h *MinHeap, x grid.Node) {
 	if h.N+1 == h.Nmax {
-		fmt.Println("Doubling the heap")
+		// fmt.Println("[D] Doubling the heap")
 		var newArray []grid.Node = make([]grid.Node, h.Nmax*2)
 		for i := 0; i < h.Nmax; i++ {
 			newArray[i] = h.Array[i]
@@ -42,12 +42,12 @@ func HeapAdd(h *MinHeap, x grid.Node) {
 		h.Nmax *= 2
 	}
 
-	fmt.Println("[+] Adding", x.Score, "Coordinates:", x.Pos)
+	// fmt.Println("[+] Adding", x.Score, "Coordinates:", x.Pos)
 	h.N++
 	h.Array[h.N] = x
 	var i int = h.N
 	for i > 1 && h.Array[i/2].Score > h.Array[i].Score {
-		fmt.Println("Swapping", h.Array[i/2].Score, "with", h.Array[i].Score)
+		// fmt.Println("[S] Swapping", h.Array[i/2].Score, "with", h.Array[i].Score)
 		h.Array[i/2], h.Array[i] = h.Array[i], h.Array[i/2]
 		i /= 2
 	}
@@ -58,7 +58,7 @@ func HeapPop(h *MinHeap) float64 {
 		fmt.Println("Heap is empty")
 		return -1
 	}
-	fmt.Println("[-] Popping", h.Array[1].Score, "Coordinates:", h.Array[1].Pos)
+	// fmt.Println("[-] Popping", h.Array[1].Score, "Coordinates:", h.Array[1].Pos)
 
 	var x grid.Node = h.Array[1] // Save the top element to return it later
 	h.Array[1] = h.Array[h.N]    // Move the last element to the top

@@ -68,6 +68,10 @@ func (g *Grid) DestroyGrid() {
 	g.Mark = nil
 }
 
+func IsInGrid(g *Grid, pos Position) bool {
+	return pos.X >= 0 && pos.X < g.X+1 && pos.Y >= 0 && pos.Y < g.Y+1
+}
+
 func PrintGrid(g *Grid) {
 	// Create a file to write to
 	f, err := os.Create("grid.txt")
@@ -78,26 +82,26 @@ func PrintGrid(g *Grid) {
 	var s string
 	for i := 0; i < g.X+1; i++ {
 		for j := 0; j < g.Y+1; j++ {
+			// If it's starting position then add s to the string
 			if i == g.Start.X && j == g.Start.Y {
-				s += "s" // Starting position
+				s += "s"
 			} else if i == g.End.X && j == g.End.Y {
-				s += "e" // Ending position
+				s += "e"
 			} else {
-				switch g.Value[i][j] {
-				case V_FREE:
-					if g.Mark[i][j] == M_USED {
-						s += "." // Used
-					} else if g.Mark[i][j] == M_FRONT {
-						s += "*" // Front
-					} else if g.Mark[i][j] == M_PATH {
-						s += "x" // Path
-					} else {
-						s += " " // Free
-					}
-				case V_WALL:
-					s += "#" // Wall
-				}
+				s += " "
 			}
+
+			// Add wall to string if last char of s is a " "
+			if g.Value[i][j] == V_WALL && s[len(s)-1] == ' ' {
+				s = s[:len(s)-1]
+				s += "#"
+			}
+
+			if g.Mark[i][j] == M_PATH && s[len(s)-1] == ' ' {
+				s = s[:len(s)-1]
+				s += "P"
+			}
+
 		}
 		s += "\n"
 	}
@@ -108,7 +112,7 @@ func PrintGrid(g *Grid) {
 }
 
 func Heuristic(s, t Position) float64 {
-	return math.Sqrt(math.Pow(float64(s.X-t.X), 2) + math.Pow(float64(s.Y-t.Y), 2))
+	return math.Sqrt(math.Pow(float64(s.X-t.X), 2) + math.Pow(float64(s.Y-t.Y), 2)) // Manhattan distance
 }
 
 func CreateNode(par *Node, cost float64, pos Position, g *Grid) *Node {
@@ -118,6 +122,6 @@ func CreateNode(par *Node, cost float64, pos Position, g *Grid) *Node {
 	}
 	n.Cost = cost
 	n.Pos = pos
-	n.Score = Heuristic(n.Pos, g.End)
+	n.Score = n.Cost + Heuristic(n.Pos, g.End)
 	return &n
 }
