@@ -94,11 +94,11 @@ func PrintGrid(g *Grid) {
 				s += "#"
 			}
 
+			// Add path to string if last char of s is a " "
 			if g.Mark[i][j] == M_PATH && s[len(s)-1] == ' ' {
 				s = s[:len(s)-1]
 				s += "P"
 			}
-
 		}
 		s += "\n"
 	}

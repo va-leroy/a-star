@@ -32,19 +32,22 @@ func main() {
 
 	// Declare size of the grid
 	var N int = 20
-	fmt.Println("[!] Grid size:", N)
+	fmt.Println("[*] Grid size:", N)
 
 	// Create a grid
 	var G *grid.Grid = grid.CreateGrid(N, N, s, e)
 
-	// Create 40 random walls
-	for i := 0; i < 40; i++ {
+	// Set the number of walls
+	var walls int = 50
+
+	// Create 50 random walls
+	for i := 0; i < walls; i++ {
 		var x, y int
 		x = rand.Intn(N)
 		y = rand.Intn(N)
 		G.Value[x][y] = grid.V_WALL
 	}
-	fmt.Println("[!] Number of walls:", 40)
+	fmt.Println("[*] Number of walls:", walls)
 
 	N = N * N                        // Number of nodes
 	var size int = (N * (N - 1)) / 2 // Number of edges
@@ -81,20 +84,32 @@ func main() {
 
 		G.Mark[U.Pos.X][U.Pos.Y] = grid.M_USED // Mark U as used
 
-		// For each neighbor of U, adjacent then diagonal
-		var dx = []int{-1, 1, 1, -1, -1, 0, 2, 0}
-		var dy = []int{0, 1, -1, -1, 0, 2, 0, -2}
+		// For each four neighbors of U
+		for i := 0; i < 4; i++ {
+			// Get the neighbor position
+			var n grid.Position
+			n.X = U.Pos.X
+			n.Y = U.Pos.Y
+			switch i {
+			case 0:
+				n.X = n.X - 1
+			case 1:
+				n.X = n.X + 1
+			case 2:
+				n.Y = n.Y - 1
+			case 3:
+				n.Y = n.Y + 1
+			}
 
-		for i := 0; i < 8; i++ {
-			var pos_v grid.Position
-			pos_v.X = U.Pos.X + dx[i]
-			pos_v.Y = U.Pos.Y + dy[i]
-
-			if grid.IsInGrid(G, pos_v) {
-				if G.Value[pos_v.X][pos_v.Y] != grid.V_WALL {
-					if G.Mark[pos_v.X][pos_v.Y] != grid.M_USED {
-						if G.Mark[pos_v.X][pos_v.Y] != grid.M_FRONT {
-							var v *grid.Node = grid.CreateNode(&U, U.Cost, pos_v, G)
+			// If the neighbor is in the grid
+			if grid.IsInGrid(G, n) {
+				// If the neighbor is not a wall
+				if G.Value[n.X][n.Y] != grid.V_WALL {
+					// If the neighbor is not used
+					if G.Mark[n.X][n.Y] != grid.M_USED {
+						// If the neighbor is not in the heap
+						if G.Mark[n.X][n.Y] != grid.M_FRONT {
+							var v *grid.Node = grid.CreateNode(&U, U.Cost, n, G)
 							heap.HeapAdd(Q, *v)
 						}
 					}
