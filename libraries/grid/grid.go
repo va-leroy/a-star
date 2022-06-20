@@ -85,19 +85,13 @@ func PrintGrid(g *Grid) {
 			} else if i == g.End.X && j == g.End.Y {
 				s += "e"
 			} else {
-				s += " "
-			}
-
-			// Add wall to string if last char of s is a " "
-			if g.Value[i][j] == V_WALL && s[len(s)-1] == ' ' {
-				s = s[:len(s)-1]
-				s += "#"
-			}
-
-			// Add path to string if last char of s is a " "
-			if g.Mark[i][j] == M_PATH && s[len(s)-1] == ' ' {
-				s = s[:len(s)-1]
-				s += "P"
+				if g.Value[i][j] == V_WALL {
+					s += "#"
+				} else if g.Mark[i][j] == M_PATH {
+					s += "."
+				} else {
+					s += " "
+				}
 			}
 		}
 		s += "\n"

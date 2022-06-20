@@ -50,27 +50,27 @@ go run main.go
 [!] Time elapsed: 747.374µs
 
 valeroy@valentins-macbook-pro a-star % cat grid.txt
-s  #          # #    
-PP          #  ##    
- PP                  
-  PP        ##       
-## PP          #   # 
-    PP      #      # 
-     PP           #  
-     #P#      # #    
- #  # P##            
-     #P#         #   
-#   # PPPPP#         
-       #  PP  #    # 
-  #  #   # P#  #     
-           PPP       
-        #    PP#   # 
-    #         PP     
-  # #    #     PP    
-   #            PP   
-                 PP  
- #          #     P# 
-                  PPe
+   s                 
+   .         #       
+  #.     #           
+   .    # #  #     # 
+   . #  #  #         
+   .  ##             
+#  .        #        
+   ...     #    #    
+    #.   #     #     
+ #   ...   #    #    
+      #.       #     
+    #  ..#  #  #   # 
+        .#   #       
+       #....      ## 
+  #   # # #.    #    
+           ..   # #  
+#   #       ..       
+           # ..      
+         # #  .#     
+         #   #...    
+                .e    
 ```
 
 Here is the command to clean the project:

@@ -21,14 +21,10 @@ func main() {
 
 	// Create two positions
 	var s, e grid.Position
-
-	// Set the start position
 	s.X = 0
-	s.Y = 0
-
-	// Set the end position
+	s.Y = 3
 	e.X = 20
-	e.Y = 20
+	e.Y = 17
 
 	// Declare size of the grid
 	var N int = 20
@@ -45,7 +41,13 @@ func main() {
 		var x, y int
 		x = rand.Intn(N)
 		y = rand.Intn(N)
-		G.Value[x][y] = grid.V_WALL
+
+		// If the position is not the starting or ending position, set as wall
+		if x != s.X && y != s.Y && x != e.X && y != e.Y {
+			G.Value[x][y] = grid.V_WALL
+		} else {
+			i--
+		}
 	}
 	fmt.Println("[*] Number of walls:", walls)
 
