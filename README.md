@@ -1,4 +1,6 @@
-[![GO](https://img.shields.io/badge/Go-1.18.2-lightgrey.svg?logo=go)](https://go.dev) ![](https://img.shields.io/badge/License-MIT-blue.svg) ![](https://img.shields.io/badge/Build-Passing-limegreen.svg)
+[![GO](https://img.shields.io/badge/Go-1.18.2-lightgrey.svg?logo=go)](https://go.dev)
+![](https://img.shields.io/badge/License-MIT-blue.svg)
+![](https://img.shields.io/badge/build-passing-limegreen.svg)
 
 # A* Search Algorithm
 
